@@ -19,11 +19,14 @@ def get_feed
 
       feed.items.each do |item|
         pkg = pkgs_by_name[item.title]
-        item.description += "\n version: #{pkg["Version"]}"
-        item.description += "\n maintainer: #{pkg["Maintainer"]}"
-        item.description += "\n votes: #{pkg["NumVotes"]}"
-        item.description += "\n license: #{pkg["License"]}"
-        item.description += "\n aur: #{item.link}"
+        desc = item.description.dup
+        item.description = "#{desc}<br/>
+<em>version:</em> #{pkg["Version"]}<br/>
+<em>maintainer:</em> #{pkg["Maintainer"]}<br/>
+<em>version:</em> #{pkg["Version"]}<br/>
+<em>votes:</em> #{pkg["NumVotes"]}<br/>
+<em>license:</em> #{pkg["License"]}<br/>
+<a href=\"#{item.link}\">AUR</a><br/>"
         item.link = pkg["URL"]
       end
       return feed.to_s
