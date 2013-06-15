@@ -1,1 +1,1 @@
-web: bundle exec ruby app.rb -p $PORT -e production
+web: python app.py
