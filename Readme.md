@@ -3,6 +3,8 @@ Arch Package Feed
 
 Provides a more advanced arch package feed.
 
+[Demo](http://archfeed.higgsboson.tk/)
+
 *dependencies*:
 
   - python 3.2 or higher
