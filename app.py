@@ -15,7 +15,7 @@ import feedparser
 import requests
 
 import gzip
-from io import StringIO
+from io import BytesIO
 
 __author__ = 'Jörg Thalheim'
 __version__ = '0.1'
@@ -238,6 +238,10 @@ def feed(db):
     }
     return template('feed.tpl', d=description, title="", entries=entries, includes=includes)
 
+@app.route('/static/<filename:path>')
+def send_static(filename):
+    return bottle.static_file(filename, root='./static')
+
 def update_aur(db):
     feed = feedparser.parse(AUR_FEED)
     latest_packages = []
@@ -329,9 +333,7 @@ class GzipMiddleware(object):
     def __call__(self, environ, start_response):
         if 'gzip' not in environ.get('HTTP_ACCEPT_ENCODING', ''):
             return self.app(environ, start_response)
-        if environ['PATH_INFO'][-3:] != '.js' and environ['PATH_INFO'][-4:] != '.css':
-            return self.app(environ, start_response)
-        buffer = StringIO.StringIO()
+        buffer = BytesIO()
         output = gzip.GzipFile(
             mode='wb',
             compresslevel=self.compresslevel,
