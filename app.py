@@ -169,7 +169,11 @@ class Package(Base):
                 item.append(("Package Url", self.arch_url()))
         return item
     def __iter__(self):
-        return iter([(col, getattr(self, col)) for col in self.__table__.columns.keys()])
+        keys = []
+        for col in self.__table__.columns.keys():
+            if col != "id":
+                keys.append((col, getattr(self, col)))
+        return iter(keys)
     def atom_id(self):
         return uuid5(NAMESPACE_OID,"%s/%s/%s/%s" % (self.repo, self.arch, self.name, self.version)).urn
     def arch_url(self):
