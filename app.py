@@ -14,6 +14,9 @@ from sqlalchemy.orm import synonym
 import feedparser
 import requests
 
+import gzip
+from io import StringIO
+
 __author__ = 'Jörg Thalheim'
 __version__ = '0.1'
 __license__ = 'MIT'
@@ -318,5 +321,52 @@ def update_arch_repositories(db):
     if len(new_rows) > 0:
         db.execute(Package.__table__.insert(), new_rows)
 
+class GzipMiddleware(object):
+    def __init__(self, app, compresslevel=9):
+        self.app = app
+        self.compresslevel = compresslevel
+
+    def __call__(self, environ, start_response):
+        if 'gzip' not in environ.get('HTTP_ACCEPT_ENCODING', ''):
+            return self.app(environ, start_response)
+        if environ['PATH_INFO'][-3:] != '.js' and environ['PATH_INFO'][-4:] != '.css':
+            return self.app(environ, start_response)
+        buffer = StringIO.StringIO()
+        output = gzip.GzipFile(
+            mode='wb',
+            compresslevel=self.compresslevel,
+            fileobj=buffer
+        )
+
+        start_response_args = []
+        def dummy_start_response(status, headers, exc_info=None):
+            start_response_args.append(status)
+            start_response_args.append(headers)
+            start_response_args.append(exc_info)
+            return output.write
+
+        app_iter = self.app(environ, dummy_start_response)
+        for line in app_iter:
+            output.write(line)
+        if hasattr(app_iter, 'close'):
+            app_iter.close()
+        output.close()
+        buffer.seek(0)
+        result = buffer.getvalue()
+        headers = []
+        for name, value in start_response_args[1]:
+            if name.lower() != 'content-length':
+                 headers.append((name, value))
+        headers.append(('Content-Length', str(len(result))))
+        headers.append(('Content-Encoding', 'gzip'))
+        start_response(start_response_args[0], headers, start_response_args[2])
+        buffer.close()
+        return [result]
+
+gzip_app = GzipMiddleware(app, compresslevel=5)
+
 if __name__ == "__main__":
-    app.run(server='gunicorn', host=os.environ.get("HOST", "0.0.0.0"), port=int(os.environ.get("PORT", 3000)))
+    bottle.run(app=gzip_app,
+               server='gunicorn',
+               host=os.environ.get("HOST", "0.0.0.0"),
+               port=int(os.environ.get("PORT", 3000)))
