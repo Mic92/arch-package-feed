@@ -6,10 +6,10 @@ Provides a more advanced arch package feed.
 *dependencies*:
 
   - python 3.2 or higher
-  - bottle
-  - sqlalchemy
-  - feedparser
-  - requests
+  - [bottle](http://bottlepy.org/)
+  - [sqlalchemy](http://sqlalchemy.org/)
+  - [feedparser](http://code.google.com/p/feedparser/)
+  - [requests](http://python-requests.org/)
 
 Installation on Heroku
 ----------------------
