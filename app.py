@@ -136,6 +136,8 @@ class Package(Base):
         self.version = data["Version"]
         self.last_update = datetime.utcfromtimestamp(data["LastModified"])
         self.maintainers = data["Maintainer"]
+        if self.maintainers is None: # sometimes packages are without maintainers
+            self.maintainers = "-"
         self.votes = data["NumVotes"]
         self.out_of_date = data["OutOfDate"] == "1"
         self.repo = "aur"
