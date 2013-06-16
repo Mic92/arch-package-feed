@@ -5,6 +5,28 @@ h1, h2, h3 {
   font-weight: 400;
   text-transform: capitalize;
 }
+
+.header img {
+  float: left;
+  width: 7em;
+  height: 7em;
+}
+
+.header h1, .header h2 {
+  position: relative;
+  top: 1em;
+  left: 1em;
+}
+
+.header h2 {
+  top: 1em;
+  left: 1.2em;
+}
+
+.header {
+  padding-bottom: 10pt;
+}
+
 th {
   font-weight: 400;
 }
@@ -14,6 +36,10 @@ th {
   padding-top: 80px;
   color: #444;
 }
+
+body {
+  background: none repeat scroll 0 0 #F6F9FC;
+}
 a, a:visited {
   color: #c00;
 }
@@ -22,6 +48,12 @@ a, a:visited {
 }
 #content li {
   list-style-position: inside;
+}
+
+fieldset {
+  background: none repeat scroll 0 0 #ECF2F5;
+  border: 1px solid #BBCCDD;
+  margin-bottom: 1.5em;
 }
 
 input[type=text] {
