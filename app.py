@@ -246,7 +246,10 @@ def update_aur(db):
     feed = feedparser.parse(AUR_FEED)
     latest_packages = []
     for item in feed['items']:
-        latest_packages.append((item['title'], item['published_parsed']))
+        (year, mon, mday, hour, m, sec) = item['published_parsed'][:6]
+        # time is one hour off on the server
+        published = datetime(year, mon, mday, hour + 1 , m, sec)
+        latest_packages.append((item['title'], published))
     conditions = []
     for (name, _) in latest_packages:
         conditions.append(Package.name == name)
@@ -254,30 +257,34 @@ def update_aur(db):
         filter(or_(*conditions)).\
         filter(Package.repo == "aur").all()
 
-    new_rows = []
-    pkgs_to_update = []
+    pkgs_to_fetch = {}
 
     for (name, last_update) in latest_packages:
         pkg = None
         for p in cached_packages:
-            if p.name == name and p.last_update == last_update:
+            if p.name == name:
                 cached_packages.remove(p)
                 pkg = p
                 break
-        if pkg is None or pkg.last_update != last_update:
-            pkgs_to_update.append(name)
+        if pkg is None:
+            pkg = Package()
+            db.add(pkg)
+            pkgs_to_fetch[name] = pkg
+        # FIXME relying on last_update doesn't work for all packages
+        elif pkg.last_update != last_update:
+            pkgs_to_fetch[name] = pkg
 
-    queries = "&".join("arg[]=%s" % quote(pkg, safe="+") for pkg in pkgs_to_update)
+    if len(pkgs_to_fetch) == 0:
+        return
+
+    queries = "&".join("arg[]=%s" % quote(pkg, safe="+") for pkg in pkgs_to_fetch.keys())
     try:
         results = requests.get(AUR_RPC_URL + "&" + queries).json()["results"]
         for json in results:
-            pkg = Package()
+            pkg = pkgs_to_fetch[json["Name"]]
             pkg.apply_aur_package_info(json)
-            new_rows.append(dict(pkg))
     except requests.exceptions.RequestException as e:
         print("failed to get information for package '%s': %s" % (name, e))
-    if len(new_rows) > 0:
-        db.execute(Package.__table__.insert(), new_rows)
 
 def update_arch_repositories(db):
     feed = feedparser.parse(PACKAGE_FEED)
