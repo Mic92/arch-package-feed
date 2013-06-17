@@ -40,7 +40,7 @@
                 <input type="checkbox" name="repos" checked="yes" value="core">Core</br>
                 <input type="checkbox" name="repos" checked="yes" value="extra">Extra</br>
                 <input type="checkbox" name="repos" checked="yes" value="community">Community<br>
-                <input type="checkbox" name="repos" checked="no"  value="testing">Testing</br>
+                <input type="checkbox" name="repos" value="testing">Testing</br>
                 <input type="checkbox" name="repos" checked="yes" value="aur">AUR</br>
               </fieldset>
 
