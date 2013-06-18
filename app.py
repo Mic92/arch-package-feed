@@ -207,7 +207,11 @@ def update(db):
 
 @app.get('/feed')
 def feed(db):
-    # Input validation
+    # Input sanitation
+    entry_size = int(request.query.get("entry_size"))
+    if not entry_size in [10, 20, 50]:
+        entry_size = 5 # punish "hackers"!
+
     repos = set(request.query.getall("repos")) & set(REPOSITORIES)
     archs = []
 
@@ -227,7 +231,7 @@ def feed(db):
     entries = db.query(Package).order_by(Package.last_update.desc()).\
             filter(Package.repo.in_(repos)).\
             filter(Package.arch.in_(archs)).\
-            limit(50)
+            limit(entry_size)
     url = request.url
     description = {
       "title": "Archlinux Packages",

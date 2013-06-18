@@ -61,6 +61,15 @@
                 <input type="checkbox" name="includes" value="maintainers">Maintainers</br>
               </fieldset>
 
+              <fieldset>
+                <h3>Select the number of entries</h3>
+                <select name="entry_size">
+                    <option>20</option>
+                    <option>10</option>
+                    <option>50</option>
+                </select>
+              </fieldset>
+
               <input type=submit value="Get the feed">
             </form>
 
