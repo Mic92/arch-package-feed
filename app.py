@@ -1,5 +1,12 @@
+# unicode_literals breaks gevent wsgi wrapper
+#from __future__ import unicode_literals
+#-*- coding: UTF-8 -*-
+
+from gevent import monkey; monkey.patch_all()
+
 import os, sys, re
-from urllib.parse import urljoin, quote
+from requests.compat import urljoin, quote
+
 from datetime import datetime, timedelta
 from uuid import uuid5, NAMESPACE_OID
 
@@ -17,7 +24,7 @@ import requests
 import gzip
 from io import BytesIO
 
-__author__ = 'Jörg Thalheim'
+__author__ = 'Joerg Thalheim'
 __version__ = '0.1'
 __license__ = 'MIT'
 
@@ -180,7 +187,11 @@ class Package(Base):
                 keys.append((col, getattr(self, col)))
         return iter(keys)
     def atom_id(self):
-        return uuid5(NAMESPACE_OID,"%s/%s/%s/%s" % (self.repo, self.arch, self.name, self.version)).urn
+        # TODO refactor me, when deprecating python2
+        return uuid5(NAMESPACE_OID, "%s/%s/%s/%s" % (self.repo.encode("utf-8"),
+            self.arch.encode("utf-8"),
+            self.name.encode("utf-8"),
+            self.version.encode("utf-8"))).urn
     def arch_url(self):
         if self.repo == "aur":
             return AUR_PKG_URL.format(pkgname=self.name)
@@ -380,6 +391,6 @@ gzip_app = GzipMiddleware(app, compresslevel=5)
 
 if __name__ == "__main__":
     bottle.run(app=gzip_app,
-               server='gunicorn',
+               server='gevent',
                host=os.environ.get("HOST", "0.0.0.0"),
                port=int(os.environ.get("PORT", 3000)))

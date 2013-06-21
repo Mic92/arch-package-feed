@@ -7,11 +7,12 @@ Provides a more advanced arch package feed.
 
 *dependencies*:
 
-  - python 3.2 or higher
+  - python 2.7 (python 3 will be supported, if gevent does support it)
   - [bottle](http://bottlepy.org/)
   - [sqlalchemy](http://sqlalchemy.org/)
   - [feedparser](http://code.google.com/p/feedparser/)
   - [requests](http://python-requests.org/)
+  - [gevent](http://www.gevent.org/)
 
 Installation on Heroku
 ----------------------
