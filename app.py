@@ -12,7 +12,7 @@ from uuid import uuid5, NAMESPACE_OID
 
 import bottle
 from bottle.ext import sqlalchemy
-from bottle import template, request
+from bottle import template, request, response
 
 from sqlalchemy import create_engine, Column, Integer, Boolean, String, DateTime, Text, or_
 from sqlalchemy.ext.declarative import declarative_base
@@ -251,6 +251,7 @@ def feed(db):
       "feed_url": urljoin(url, '/feed'),
       "date_updated": "",
     }
+    response.set_header("Content-Type", "application/atom+xml")
     return template('feed.tpl', d=description, title="", entries=entries, includes=includes)
 
 @app.route('/static/<filename:path>')
