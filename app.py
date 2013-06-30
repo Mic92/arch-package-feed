@@ -219,6 +219,9 @@ def update(db):
 @app.get('/feed')
 def feed(db):
     # Input sanitation
+    feed_link = request.query.get("feed_link", 'package_url')
+    if not feed_link in ['project_url', 'package_url']:
+        feed_link = 'project_url'
     entry_size = int(request.query.get("entry_size"))
     if not entry_size in [10, 20, 50]:
         entry_size = 5 # punish "hackers"!
@@ -242,7 +245,7 @@ def feed(db):
     entries = db.query(Package).order_by(Package.last_update.desc()).\
             filter(Package.repo.in_(repos)).\
             filter(Package.arch.in_(archs)).\
-            limit(entry_size)
+            limit(entry_size).all()
     url = request.url
     description = {
       "title": "Archlinux Packages",
@@ -252,7 +255,12 @@ def feed(db):
       "date_updated": "",
     }
     response.set_header("Content-Type", "application/atom+xml")
-    return template('feed.tpl', d=description, title="", entries=entries, includes=includes)
+    return template('feed.tpl',
+            d=description,
+            title="",
+            entries=entries,
+            includes=includes,
+            feed_link=feed_link)
 
 @app.route('/static/<filename:path>')
 def send_static(filename):

@@ -30,35 +30,41 @@
             <form action="/feed" method="get">
               <fieldset>
                 <h3>Filter by architecture</h3>
-                <input type="checkbox" name="arch" value="i686">i686</br>
-                <input type="checkbox" name="arch" checked="yes" value="x86_64">x86_64<br>
-                <input type="checkbox" name="arch" checked="yes" value="any">Any</br>
+                <input type="checkbox" name="arch" value="i686">i686</input></br>
+                <input type="checkbox" name="arch" checked="yes" value="x86_64">x86_64</input><br>
+                <input type="checkbox" name="arch" checked="yes" value="any">Any</input></br>
               </fieldset>
 
               <fieldset>
                 <h3>Filter by repository</h3>
-                <input type="checkbox" name="repos" checked="yes" value="core">Core</br>
-                <input type="checkbox" name="repos" checked="yes" value="extra">Extra</br>
-                <input type="checkbox" name="repos" checked="yes" value="community">Community<br>
-                <input type="checkbox" name="repos" value="testing">Testing</br>
-                <input type="checkbox" name="repos" checked="yes" value="aur">AUR</br>
+                <input type="checkbox" name="repos" checked="yes" value="core">Core</input></br>
+                <input type="checkbox" name="repos" checked="yes" value="extra">Extra</input></br>
+                <input type="checkbox" name="repos" checked="yes" value="community">Community</input><br>
+                <input type="checkbox" name="repos" value="testing">Testing</input></br>
+                <input type="checkbox" name="repos" checked="yes" value="aur">AUR</input></br>
               </fieldset>
 
               <fieldset>
                 <h3>Include the following information</h3>
-                <input type="checkbox" name="includes" checked="yes" value="name">Name</br>
-                <input type="checkbox" name="includes" checked="yes" value="version">Version</br>
-                <input type="checkbox" name="includes" checked="yes" value="description">Description</br>
-                <input type="checkbox" name="includes" value="arch">Arch</br>
-                <input type="checkbox" name="includes" checked="yes" value="repo">Repository</br>
-                <input type="checkbox" name="includes" checked="yes" value="arch_url">Arch Repository Url</br>
-                <input type="checkbox" name="includes" checked="yes" value="url">Project Url</br>
-                <input type="checkbox" name="includes" value="last_update">Last Update</br>
-                <input type="checkbox" name="includes" value="compressed_size">Compressed Size</br>
-                <input type="checkbox" name="includes" value="installed_size">Installed Size<br>
-                <input type="checkbox" name="includes" value="depends">Depends</br>
-                <input type="checkbox" name="includes" checked="yes" value="license">License</br>
-                <input type="checkbox" name="includes" value="maintainers">Maintainers</br>
+                <input type="checkbox" name="includes" checked="yes" value="name">Name</input></br>
+                <input type="checkbox" name="includes" checked="yes" value="version">Version</input></br>
+                <input type="checkbox" name="includes" checked="yes" value="description">Description</input></br>
+                <input type="checkbox" name="includes" value="arch">Arch</input></br>
+                <input type="checkbox" name="includes" checked="yes" value="repo">Repository</input></br>
+                <input type="checkbox" name="includes" checked="yes" value="arch_url">Arch Repository Url</input></br>
+                <input type="checkbox" name="includes" checked="yes" value="url">Project Url</input></br>
+                <input type="checkbox" name="includes" value="last_update">Last Update</input></br>
+                <input type="checkbox" name="includes" value="compressed_size">Compressed Size</input></br>
+                <input type="checkbox" name="includes" value="installed_size">Installed Size</input><br>
+                <input type="checkbox" name="includes" value="depends">Depends</input></br>
+                <input type="checkbox" name="includes" checked="yes" value="license">License</input></br>
+                <input type="checkbox" name="includes" value="maintainers">Maintainers</input></br>
+              </fieldset>
+
+              <fieldset>
+                <h3>Set Feed link to</h3>
+                <input type="radio" name="feed_link" value="project_url" checked="yes">Upstream Project Url</input><br>
+                <input type="radio" name="feed_link" value="package_url">Arch Package Url</input><br>
               </fieldset>
 
               <fieldset>
@@ -70,7 +76,7 @@
                 </select>
               </fieldset>
 
-              <input type=submit value="Get the feed">
+              <input type=submit value="Get the feed"></input>
             </form>
 
             <h3>Thanks</h3>
