@@ -63,8 +63,8 @@
 
               <fieldset>
                 <h3>Set Feed link to</h3>
-                <input type="radio" name="feed_link" value="project_url" checked="yes">Upstream Project Url</input><br>
                 <input type="radio" name="feed_link" value="package_url">Arch Package Url</input><br>
+                <input type="radio" name="feed_link" value="project_url" checked="yes">Upstream Project Url</input><br>
               </fieldset>
 
               <fieldset>

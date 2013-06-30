@@ -10,7 +10,7 @@
     %for entry in entries:
     <entry>
         <title>{{! entry.name }}</title>
-        <link rel="alternate" type="text/html" href="{{entry.url if feed_link == "package_url" else entry.arch_url() }}" />
+        <link rel="alternate" type="text/html" href="{{entry.url if feed_link == "project_url" else entry.arch_url() }}" />
         <id>{{ entry.atom_id() }}</id>
         <published>{{ entry.last_update }}</published>
         <updated>{{ entry.last_update }}</updated>
